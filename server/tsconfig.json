@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es6",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */     /* Modules */
+    "module": "commonjs",  
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "strict": true,      
+    "outDir": "dist",
+    "allowJs": true,
+    "lib": ["es6"],
+    "baseUrl": "./src",
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.spec.ts"
+  ],
+  "files": ["./src/types.d.ts"]
+}
