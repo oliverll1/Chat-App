@@ -59,12 +59,9 @@ export const accessChat = asyncHandler(async (req: Request, res: Response): Prom
         }
     }   
 });
-  
-  //@description     Fetch all chats for a user
-  //@route           GET /api/chat/
-  //@access          Protected
+
+  // Fetch all chats for a user
  export const fetchChats = asyncHandler(async (req: Request, res: Response): Promise<void | any> => {
-    
     try {
         const results = await Chat.find({ users: { $elemMatch: { $eq: req.user?._id } } })
         .populate("users", "-password")

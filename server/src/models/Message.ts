@@ -15,8 +15,8 @@ export interface IMessage extends Document {
 const messageSchema = new Schema(
   {
     sender: { 
-        type: Schema.Types.ObjectId, 
-        ref: "User" 
+        type: Schema.Types.ObjectId,
+        ref: "User"
     },
     content: { 
         type: String, 

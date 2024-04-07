@@ -14,6 +14,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response): Pr
         res.status(400);
         throw new Error("Please add all fields");
       }
+
     const userExists = await User.findOne({ email: req.body.email });
 
     if(userExists){
@@ -23,9 +24,6 @@ export const registerUser = asyncHandler(async (req: Request, res: Response): Pr
 
 
     const user = await User.create({ username, email, password });
-    console.log("-------------------------------------");
-    console.log(user);
-    
 
     if (user) {
       return res.status(201).json({
@@ -42,17 +40,17 @@ export const registerUser = asyncHandler(async (req: Request, res: Response): Pr
 
 
 export const allUsers = asyncHandler(async (req: Request, res: Response): Promise<void| any> => {
-    // const keyword = req.query.search
-    //   ? {
-    //       $or: [
-    //         { name: { $regex: req.query.search, $options: "i" } },
-    //         { email: { $regex: req.query.search, $options: "i" } },
-    //       ],
-    //     }
-    //   : {};
-  
-   const users = await User.find();
-   res.send(users);
+    const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+    const users = await User.find(keyword).select('-password').find({ _id: { $ne: req.user?._id } });
+    res.send(users);
   });
 
 export const authUser = asyncHandler(async (req: Request, res: Response): Promise<void | any> => {
