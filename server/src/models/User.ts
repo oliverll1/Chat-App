@@ -26,14 +26,14 @@ const userSchema = new Schema({
         type: String,
         required:true,
     },
-    image:{
+    image: {
         type: String,
         default: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
     }
 });
 
 userSchema.pre('save', async function (next) {
-    if( !this.isModified('password')){
+    if( !this.isModified('password')) {
         next();
     }
 

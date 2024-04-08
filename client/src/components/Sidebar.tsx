@@ -9,7 +9,6 @@ import {
 } from "@material-tailwind/react";
 import {
   UserCircleIcon,
-  Cog6ToothIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import {
@@ -53,7 +52,6 @@ export function Sidebar() {
     const apiUrl = import.meta.env.VITE_API_URL;
     
     try {
-      console.log(user);
         const config = {
           method: 'get',
           headers: {
@@ -64,7 +62,6 @@ export function Sidebar() {
         const response = await fetch(`${apiUrl}/chat?userId=${user._id}`, config);
         const data = await response.json();
 
-        console.log(data);
         setChats(data);
     }catch (error: unknown) {
         if (error instanceof Error) {
@@ -115,6 +112,8 @@ export function Sidebar() {
       if (!chats.find((chat) => chat._id === data._id)) setChats([data, ...chats]);
 
       setSelectedChat(data);
+
+     
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -123,7 +122,7 @@ export function Sidebar() {
       }
     }
   };
-
+  console.log(selectedChat);
   useEffect(() => {
     if(user){
         fetchUsers();
@@ -158,7 +157,7 @@ export function Sidebar() {
 
                   <List>
                   {chats.map((chat) => (
-                      <ListItem key={chat._id}>
+                      <ListItem key={chat._id} onClick={() => accessChat(chat.users[1]._id)}>
                         {chat.chatName}
                       </ListItem>
                     ))} 

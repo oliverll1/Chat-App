@@ -5,8 +5,6 @@ import { Home } from './Pages/Home';
 import { Chat } from './Pages/Chat';
 
 function App() {
-  const [count, setCount] = useState(0);
-
 
   return (
     <>

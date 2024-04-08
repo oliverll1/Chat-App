@@ -4,12 +4,14 @@ import { Request, Response } from 'express';
 import User from '../models/User';
 import Chat from '../models/Chat';
 
-export const accessChat = asyncHandler(async (req: Request, res: Response): Promise<void | any> => {
+export const accessChat = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.body;
+
   
     if (!userId) {
       console.log("UserId param not sent with request");
-      return res.sendStatus(400);
+      res.sendStatus(400);
+      return;
     }
   
     // Check if there is an existing chat between the current user (req.user) and the specified userId
@@ -29,7 +31,8 @@ export const accessChat = asyncHandler(async (req: Request, res: Response): Prom
     
     // If there is an existing chat between the users, send the chat data
     if (currentChat.length > 0) {
-      return res.send(currentChat[0]);
+      res.send(currentChat[0]);
+      return;
     } 
 
     // If there's no existing chat, create a new one

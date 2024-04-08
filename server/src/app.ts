@@ -8,6 +8,7 @@ import connectDB from './config/db';
 import userRoutes from './routes/userRoutes';
 import { notFound } from './middleware/errorMiddleware';
 import chatRoutes from './routes/chatRoutes';
+import messageRoutes from './routes/messageRoutes';
 
 
 dotenv.config();
@@ -46,7 +47,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
-// app.use("/api/message", messageRoutes);
+app.use("/api/message", messageRoutes);
 
 app.use(notFound);
 

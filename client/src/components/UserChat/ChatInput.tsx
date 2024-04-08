@@ -1,6 +1,48 @@
 import { Textarea, IconButton } from "@material-tailwind/react";
+import { useState } from "react";
+import { ChatState } from "../../Context/ChatProvider";
+
 
 export function ChatInput() {
+  const [messageText , setMessageText] = useState('');
+
+  const {user, selectedChat } = ChatState();
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  const sendMessage = async (message: string): Promise<void> => {
+      if(!selectedChat) {
+          console.log("no chat selected");
+          return;
+      }
+      
+      try {
+          const config = {
+            method: 'post',
+            headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({
+               content: message,
+               chatId: selectedChat._id,
+              }),
+          };
+  
+          const response = await fetch(`${apiUrl}/message`, config);
+          const data = await response.json();
+  
+         console.log(data);
+         setMessageText('');
+  
+      }catch (error: unknown) {
+          if (error instanceof Error) {
+              console.error(error.message);
+          } else {
+              console.error("An unknown error occurred");
+          }
+      }        
+  }
+
   return (
     <div className="flex w-full flex-row items-center gap-2 rounded-[5px] border border-gray-900/10 bg-white-900/5">
       <div className="flex">
@@ -39,6 +81,8 @@ export function ChatInput() {
       </div>
       <Textarea
         rows={2}
+        value={messageText}
+        onChange={(e) => setMessageText(e.target.value)}
         placeholder="Your Message"
         className="min-h-full !border-0 focus:border-transparent"
         containerProps={{
@@ -49,7 +93,7 @@ export function ChatInput() {
         }}
       />
       <div>
-        <IconButton variant="text" className="rounded-full">
+        <IconButton variant="text" className="rounded-full" onClick={() => sendMessage(messageText)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
