@@ -22,6 +22,55 @@ const io = new Server(server);
 io.on('connection', async (socket) => {
     console.log('user connected');
 
+    socket.on('setup', (userData) => {
+        if(!userData) {
+            return;
+        }
+
+        socket.join(userData._id);
+        socket.emit('connected');
+    });
+
+    socket.on('join chat', (room) => {
+        socket.join(room);
+        console.log('User joined room: ' + room);	
+    });
+
+    socket.on("typing", (room) => {
+      console.log("typing");
+      socket.to(room).emit("typing");
+    });
+
+    socket.on("stop typing", (room) => {
+      console.log("stop typing");
+      socket.to(room).emit("stop typing");
+    });
+
+
+
+    socket.on("new message", (newMessage) => {
+    const chat = newMessage.chat;
+    const chatId = chat._id;
+
+    if (!chat.users){
+      console.log("chat.users not defined");
+      return;
+    } 
+
+    chat.users.forEach((user) => {
+      if (user._id === newMessage.sender._id) {
+        socket.emit("message sent", newMessage);
+      } else {
+        socket.to(chatId).emit("message received",  newMessage);
+      }
+    });
+});
+  
+    socket.off("setup", () => {
+      console.log("USER DISCONNECTED");
+
+    });
+
     socket.on('disconnect', () => {
         console.log('an user has disconnected')
     });
@@ -30,7 +79,7 @@ io.on('connection', async (socket) => {
 
 // Options
 const corsOptions = {
-    origin: 'http://localhost:3000'
+    origin: process.env.ORIGIN_URL || 'http://localhost:3000'
 }
 
 
@@ -55,3 +104,4 @@ app.use(notFound);
 server.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+

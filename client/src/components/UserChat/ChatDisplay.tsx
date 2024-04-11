@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
 import { ChatBubble } from "./ChatBubble";
-import { ChatState } from '../../Context/ChatProvider';
 
-export const ChatDisplay = () => {
+import ScrollableFeed from 'react-scrollable-feed';
+import { Socket } from "socket.io-client";
+
+interface ChatDisplayProps {
+  socket: Socket;
+  selectedChat: any;
+  user: any;
+}
+
+export const ChatDisplay = ({ socket, selectedChat, user}: ChatDisplayProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const [messages, setMessages] = useState([]);
-  const {user, selectedChat } = ChatState();
+  const [messages, setMessages] = useState<any>([]);
+
+
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -22,9 +31,8 @@ export const ChatDisplay = () => {
           const response = await fetch(`${apiUrl}/message/${selectedChat._id}`, config);
           const data = await response.json();
   
-        console.log(data);
         setMessages(data);
-
+        socket.emit("join chat", selectedChat._id);
       } catch (error: unknown) {
         if (error instanceof Error) {
             console.error(error.message);
@@ -40,12 +48,28 @@ useEffect(() => {
 }, [selectedChat]);
 
 
+useEffect(() => {
+  const handleMessages = (newMessage) => {
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+  };
+
+  socket.on("message received",handleMessages);
+  socket.on("message sent", handleMessages);
+
+  return () => {
+    socket.off("message received", handleMessages);
+    socket.off("message sent", handleMessages);
+  };
+}),[socket, messages];
+
 
   return (
-    <div className='w-full flex flex-col justify-end flex-end bg-gray-300 h-full p-4'>
+    <div className='w-full flex max-h-[93%] h-full flex-col justify-end flex-end bg-gray-300  p-4'>
+      <ScrollableFeed className='w-full !h-auto'> {/* !h-auto --> overwrites inline height coming from the library */}
         {messages.map((message) => (
             <ChatBubble key={message._id} message={message.content}/>
         ))}
+      </ScrollableFeed>
     </div>  
   )
 }

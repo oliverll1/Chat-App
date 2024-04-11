@@ -16,7 +16,7 @@ import { Error } from "../miscellaneous/Error";
     });
 
     const [error , setError] = useState('');
-
+    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
     /**
@@ -42,17 +42,14 @@ import { Error } from "../miscellaneous/Error";
           body: JSON.stringify(formData)
         };
   
-        const response = await fetch('http://localhost:7000/api/user/login', config );
-        console.log(response);
+        const response = await fetch(`${apiUrl}/user/login`, config );
 
         if (!response.ok) {
           setError('Invalid Email or Password');
           return;
         }
 
-        const data = await response.json();
-        console.log(data);
-        
+        const data = await response.json();       
         localStorage.setItem("userInfo", JSON.stringify(data));
   
         navigate("/chat");

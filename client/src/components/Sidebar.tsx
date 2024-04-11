@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Typography,
@@ -26,9 +26,9 @@ import { useNavigate } from "react-router-dom";
 import { ChatState } from "../Context/ChatProvider";
  
 export function Sidebar() {
-  const [open, setOpen] = React.useState(0);
+  const [open, setOpen] = useState(0);
   const navigate =  useNavigate();
-  const [userList, setUserList] = React.useState([]);
+  const [userList, setUserList] = useState([]);
 
   const { 
     user,
@@ -38,7 +38,7 @@ export function Sidebar() {
     setChats 
 } = ChatState();
 
- 
+ // TODO: Hamburger Menu
   const handleOpen = (value) => {
     setOpen(open ? false : value);
   };
@@ -122,7 +122,6 @@ export function Sidebar() {
       }
     }
   };
-  console.log(selectedChat);
   useEffect(() => {
     if(user){
         fetchUsers();

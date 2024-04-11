@@ -19,6 +19,7 @@ export function Signup() {
   });
 
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const isValidEmail = (email: string) => {
     return email && /\S+@\S+\.\S+/.test(email);
@@ -97,7 +98,7 @@ export function Signup() {
         body: JSON.stringify(formData)
       };
 
-      const response = await fetch('http://localhost:7000/api/user', config );
+      const response = await fetch(`${apiUrl}/user`, config );
       const data = await response.json();
 
       localStorage.setItem("userInfo", JSON.stringify(data));

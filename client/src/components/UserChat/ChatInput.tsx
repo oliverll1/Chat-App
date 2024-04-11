@@ -1,40 +1,54 @@
 import { Textarea, IconButton } from "@material-tailwind/react";
-import { useState } from "react";
-import { ChatState } from "../../Context/ChatProvider";
+import { useEffect, useRef, useState } from "react";
+import { Socket } from "socket.io-client";
 
+interface ChatInputProps {
+  socket: Socket;
+  socketConnected: boolean;
+  selectedChat: any;
+  user: any;
+}
 
-export function ChatInput() {
+export function ChatInput({ socket, socketConnected, user, selectedChat }: ChatInputProps) {
   const [messageText , setMessageText] = useState('');
-
-  const {user, selectedChat } = ChatState();
+  const [isTyping, setIsTyping] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
+  const typingTimeoutRef = useRef<number | null>(null);
 
   const sendMessage = async (message: string): Promise<void> => {
       if(!selectedChat) {
           console.log("no chat selected");
           return;
       }
-      
+
+      if(!message) {
+          return;
+      }
+
+      // Make sure to stop typing when sending message
+      socket.emit("stop typing", selectedChat._id);
+
       try {
-          const config = {
-            method: 'post',
-            headers: {
-              "Content-type": "application/json",
-              Authorization: `Bearer ${user.token}`,
-            },
-            body: JSON.stringify({
-               content: message,
-               chatId: selectedChat._id,
-              }),
-          };
-  
-          const response = await fetch(`${apiUrl}/message`, config);
-          const data = await response.json();
-  
-         console.log(data);
-         setMessageText('');
-  
-      }catch (error: unknown) {
+        const config = {
+          method: 'post',
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+              content: message,
+              chatId: selectedChat._id,
+            }),
+        };
+
+        const response = await fetch(`${apiUrl}/message`, config);
+        const data = await response.json();
+
+        socket.emit("new message", data);
+        setMessageText('');
+         
+
+      } catch (error: unknown) {
           if (error instanceof Error) {
               console.error(error.message);
           } else {
@@ -43,10 +57,52 @@ export function ChatInput() {
       }        
   }
 
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    
+    if(!selectedChat) {
+      return;
+    }
+
+    setMessageText(event.target.value);
+    if (!socketConnected) return;
+
+    socket.emit("typing", selectedChat._id);
+    const timerLength = 3000;
+    
+  
+    // Clear previous timer if it exists
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // Set new timeout
+    typingTimeoutRef.current = setTimeout(() => {
+      socket.emit("stop typing", selectedChat._id);
+      setIsTyping(false);
+    }, timerLength);
+  }
+
+
+// Listen for "typing" and "stop typing" events
+useEffect(() => {
+  socket.on("typing", () => setIsTyping(true));
+  
+  socket.on("stop typing", () => setIsTyping(false));
+
+  return () => {
+    setIsTyping(false);
+    socket.off("typing");
+    socket.off("stop typing");
+  };
+}, [selectedChat]);
+
+
   return (
-    <div className="flex w-full flex-row items-center gap-2 rounded-[5px] border border-gray-900/10 bg-white-900/5">
+    <div className="flex w-full max-h-[7%] h-full flex-row items-center gap-2 rounded-[5px] border border-gray-900/10 bg-white-900/5">
+      {isTyping && <p className='text-xs text-gray-500 absolute mt-[-7rem] ml-3'>Typing...</p>}
       <div className="flex">
-        <IconButton variant="text" className="rounded-full">
+        {/* <IconButton variant="text" className="rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -61,7 +117,7 @@ export function ChatInput() {
               d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
             />
           </svg>
-        </IconButton>
+        </IconButton> */}
         <IconButton variant="text" className="rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +138,7 @@ export function ChatInput() {
       <Textarea
         rows={2}
         value={messageText}
-        onChange={(e) => setMessageText(e.target.value)}
+        onChange={(e) => handleChange(e)}
         placeholder="Your Message"
         className="min-h-full !border-0 focus:border-transparent"
         containerProps={{

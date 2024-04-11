@@ -8,9 +8,11 @@ import { Document } from "mongoose";
 // Get all Messages
 export const allMessages = asyncHandler(async (req, res) => {
   try {
+
     const messages = await Message.find({ chat: req.params.chatId })
       .populate("sender", "name email")
       .populate("chat");
+
     res.json(messages);
   } catch (error: unknown) {
     if (error instanceof Error) {
