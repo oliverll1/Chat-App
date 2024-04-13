@@ -62,12 +62,16 @@ useEffect(() => {
   };
 }),[socket, messages];
 
-
+ console.log(messages)
   return (
     <div className='w-full flex max-h-[93%] h-full flex-col justify-end flex-end bg-gray-300  p-4'>
       <ScrollableFeed className='w-full !h-auto'> {/* !h-auto --> overwrites inline height coming from the library */}
         {messages.map((message) => (
-            <ChatBubble key={message._id} message={message.content}/>
+            <ChatBubble
+             key={message._id}
+             message={message.content}
+             userSent={user._id === message.sender._id ? true : false}
+             />
         ))}
       </ScrollableFeed>
     </div>  
