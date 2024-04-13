@@ -184,7 +184,7 @@ export function Sidebar() {
                               <Typography variant="h6" color="blue-gray">
                                 {displayChatUser[0].username}
                               </Typography>
-                              <Typography variant="small" color="gray" className="font-normal text-ellipsis overflow-hidden ...">
+                              <Typography variant="small" color="gray" className="font-normal truncate max-w-[150px]">
                                 {chat.latestMessage?.content}
                               </Typography>
                             </div>                     
