@@ -36,9 +36,8 @@ io.on('connection', async (socket) => {
         console.log('User joined room: ' + room);	
     });
 
-    socket.on("typing", (room) => {
-      console.log("typing");
-      socket.to(room).emit("typing");
+    socket.on("typing", ({ roomId, username }) => {
+      socket.to(roomId).emit("typing", { username });
     });
 
     socket.on("stop typing", (room) => {

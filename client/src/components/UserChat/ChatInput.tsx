@@ -11,7 +11,7 @@ interface ChatInputProps {
 
 export function ChatInput({ socket, socketConnected, user, selectedChat }: ChatInputProps) {
   const [messageText , setMessageText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [isTypingMessage, setIsTypingMessage] = useState<string>('');
   const apiUrl = import.meta.env.VITE_API_URL;
   const typingTimeoutRef = useRef<number | null>(null);
 
@@ -67,7 +67,7 @@ export function ChatInput({ socket, socketConnected, user, selectedChat }: ChatI
     setMessageText(event.target.value);
     if (!socketConnected) return;
 
-    socket.emit("typing", selectedChat._id);
+    socket.emit("typing", { roomId: selectedChat._id, username: user.name });
     const timerLength = 3000;
     
   
@@ -79,28 +79,30 @@ export function ChatInput({ socket, socketConnected, user, selectedChat }: ChatI
     // Set new timeout
     typingTimeoutRef.current = setTimeout(() => {
       socket.emit("stop typing", selectedChat._id);
-      setIsTyping(false);
+      setIsTypingMessage('');
     }, timerLength);
   }
 
 
 // Listen for "typing" and "stop typing" events
 useEffect(() => {
-  socket.on("typing", () => setIsTyping(true));
+  socket.on("typing", ({ username }) => setIsTypingMessage(`${username} is typing...`));
+
   
-  socket.on("stop typing", () => setIsTyping(false));
+  socket.on("stop typing", () => setIsTypingMessage(''));
 
   return () => {
-    setIsTyping(false);
+    setIsTypingMessage('');
     socket.off("typing");
     socket.off("stop typing");
   };
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [selectedChat]);
 
 
   return (
     <div className="flex w-full max-h-[7%] h-full flex-row items-center gap-2 rounded-[5px] border border-gray-900/10 bg-white-900/5">
-      {isTyping && <p className='text-xs text-gray-500 absolute mt-[-7rem] ml-3'>Typing...</p>}
+      {isTypingMessage && <p className='text-xs text-gray-500 absolute mt-[-7rem] ml-3'>{isTypingMessage}</p>}
       <div className="flex">
         {/* <IconButton variant="text" className="rounded-full">
           <svg

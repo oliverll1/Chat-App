@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import User from '../models/User';
 import Chat from '../models/Chat';
+import { Document } from 'mongodb';
 
 export const accessChat = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.body;
@@ -37,7 +38,7 @@ export const accessChat = asyncHandler(async (req: Request, res: Response): Prom
 
     // If there's no existing chat, create a new one
     const chatData = {
-        chatName: "sender",         // Default chat name (could be improved)
+        chatName: 'User chat',       
         users: [req.user?._id, userId],  // Include the current user and the specified user in the chat
     };
 

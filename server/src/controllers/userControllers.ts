@@ -6,7 +6,7 @@ import { generateToken } from '../config/generateToken';
 import { IUser } from '../models/User';
 
 
-export const registerUser = asyncHandler(async (req: Request, res: Response): Promise<void | any> => {
+export const registerUser = asyncHandler(async (req: Request, res: Response): Promise<void> => {
 
     const { username, email, password } = req.body;
 
@@ -26,24 +26,26 @@ export const registerUser = asyncHandler(async (req: Request, res: Response): Pr
     const user = await User.create({ username, email, password });
 
     if (user) {
-      return res.status(201).json({
+      res.status(201).json({
         _id: user._id,
         name: user.username,
         email: user.email,
         token: generateToken(user._id)
-    });
+      });
+      return;
   } else {
         res.status(400);
         throw new Error("User not found");
     }
 });
 
-
-export const allUsers = asyncHandler(async (req: Request, res: Response): Promise<void| any> => {
+// Get all users matching the search keyword (If empty returns all)
+export const allUsers = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const keyword = req.query.search
+    // If 'search' parameter exists, construct a query to search for users by name or email, if not, set an empty object
     ? {
         $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
+          { username: { $regex: req.query.search, $options: "i" } },
           { email: { $regex: req.query.search, $options: "i" } },
         ],
       }
@@ -53,21 +55,24 @@ export const allUsers = asyncHandler(async (req: Request, res: Response): Promis
     res.send(users);
   });
 
-export const authUser = asyncHandler(async (req: Request, res: Response): Promise<void | any> => {
+
+export const authUser = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
   
     const user = await User.findOne({ email });
   
     if (user && (await user.validatePassword(password))) {
-      return res.json({
+      res.json({
         _id: user._id,
         name: user.username,
         email: user.email,
         token: generateToken(user._id),
       });
+      return;
     } else {
       res.status(401);
       throw new Error("Invalid Email or Password");
     }
   });
+
   
