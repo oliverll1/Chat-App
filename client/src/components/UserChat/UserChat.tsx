@@ -1,16 +1,12 @@
 import { ChatInput } from './ChatInput';
 import { ChatDisplay } from './ChatDisplay';
-import io from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import { ChatState } from '../../Context/ChatProvider';
 
 export const UserChat = () => {
     const [socketConnected, setSocketConnected] = useState(false);
-    const socketUrl = import.meta.env.VITE_SOCKET_URL;
-    const {user, selectedChat } = ChatState();
-    const socket = io( socketUrl, {
-        transports: ['websocket']
-    });
+    const {user, selectedChat, socket } = ChatState();
+    
 
 
     useEffect(() => {

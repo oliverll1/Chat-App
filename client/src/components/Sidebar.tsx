@@ -25,6 +25,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { ChatState } from "../Context/ChatProvider";
+import ChatMenuItem from "./ChatMenuItem";
 
  
 export function Sidebar() {
@@ -37,7 +38,8 @@ export function Sidebar() {
     user,
     setSelectedChat,
     chats, 
-    setChats 
+    setChats,
+    socket,
 } = ChatState();
 
  // TODO: Hamburger Menu
@@ -168,32 +170,18 @@ export function Sidebar() {
             <TabsBody>
                 <TabPanel value="chats">
                   <List>
-                  {chats.map((chat) => {
+                    {chats.map((chat) => {
+                      
+                      return <ChatMenuItem 
+                        key={chat._id} 
+                        chat={chat} 
+                        accessChat={accessChat} 
+                        user={user} 
+                        socket={socket}
+                      />
                     
-                    // Gets the other user in the chat to show the name in the list.
-                    const displayChatUser = chat.users.filter( (chatUser) => {
-                      return chatUser._id !== user._id;
-                    });
-
-                      return (
-                        <ListItem key={chat._id} onClick={() => accessChat(chat.users[1]._id)}>
-                          <ListItemPrefix>
-                            <Avatar variant="circular" alt="alexander" src="https://docs.material-tailwind.com/img/face-2.jpg" />
-                          </ListItemPrefix>
-                            <div>
-                              <Typography variant="h6" color="blue-gray">
-                                {displayChatUser[0].username}
-                              </Typography>
-                              <Typography variant="small" color="gray" className="font-normal truncate max-w-[150px]">
-                                {chat.latestMessage?.content}
-                              </Typography>
-                            </div>                     
-                        </ListItem>
-                      )
-                  })} 
-                  
-                  </List>
-                    
+                    })}
+                  </List>                    
                 </TabPanel>
                 
                 <TabPanel value="users">
@@ -219,7 +207,6 @@ export function Sidebar() {
                       <MagnifyingGlassIcon className="h-5 w-5" />
                     </Button>                        
                 </div>
-
 
                 <List>                
                   {userList.map((user) => (

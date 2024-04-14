@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import io from 'socket.io-client';
 
 const ChatContext = createContext({});
 
@@ -9,6 +10,13 @@ export const ChatProvider = ({ children }) => {
     const [selectedChat, setSelectedChat] = useState<string>();
     const [notifications, setNotifications] = useState<string[]>([]);
     const [chats, setChats] = useState<string[]>([]);
+
+    const socketUrl = import.meta.env.VITE_SOCKET_URL;
+
+    const socket = io( socketUrl, {
+        transports: ['websocket']
+    });
+
 
     const navigate = useNavigate();
 
@@ -30,7 +38,8 @@ export const ChatProvider = ({ children }) => {
                 notifications, 
                 setNotifications, 
                 chats, 
-                setChats 
+                setChats,
+                socket 
             }}>
             {children}
         </ChatContext.Provider>
