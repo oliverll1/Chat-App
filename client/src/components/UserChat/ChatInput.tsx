@@ -58,19 +58,32 @@ export function ChatInput({ socket, socketConnected, user, selectedChat }: ChatI
   }
 
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    // Send message when Enter key is pressed unless shift key is held down.
+    if (!event.shiftKey && event.key === 'Enter') {
+      if(messageText.trim().length > 0) {
+        sendMessage(messageText);
+      }
+    }
+  }
+
+  const handleClick = () => {
+      if(messageText.trim().length > 0) {
+        sendMessage(messageText);
+      }
+  }
+
+
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    
     if(!selectedChat) {
       return;
     }
 
-    setMessageText(event.target.value);
     if (!socketConnected) return;
-
+    setMessageText(event.target.value);
     socket.emit("typing", { roomId: selectedChat._id, username: user.name });
     const timerLength = 3000;
     
-  
     // Clear previous timer if it exists
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
@@ -141,6 +154,7 @@ useEffect(() => {
         rows={2}
         value={messageText}
         onChange={(e) => handleChange(e)}
+        onKeyDown={(e) => handleKeyDown(e)}
         placeholder="Your Message"
         className="min-h-full !border-0 focus:border-transparent"
         containerProps={{
@@ -151,7 +165,7 @@ useEffect(() => {
         }}
       />
       <div>
-        <IconButton variant="text" className="rounded-full" onClick={() => sendMessage(messageText)}>
+        <IconButton variant="text" className="rounded-full" onClick={handleClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
