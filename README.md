@@ -10,6 +10,8 @@ A Full Stack web app for a chat between users.
 * Notifications
 * Delete Chats Option
 * Edit Profile
+* Display User Information in Navbar
+* Color Palette?
 
 ## Tech Debt:
 * Create and improve types

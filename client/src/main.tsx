@@ -5,12 +5,13 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from "@material-tailwind/react";
 import { ChatProvider} from "./Context/ChatProvider";
-
+import Header from './components/Header.tsx';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
     <BrowserRouter>
-       <ChatProvider>
+       <ChatProvider> 
+          <Header />
           <App />
        </ChatProvider>
       </BrowserRouter>

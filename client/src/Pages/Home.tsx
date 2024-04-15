@@ -1,10 +1,12 @@
 
 import { AuthenticationForm } from '../components/AutheticationForm/AuthenticationForm';
 
-export const Home = () => {
+export default function Home() {
   return (
-    <main className='w-full flex justify-center'>
+    <div className='margin-auto w-full flex items-center'>
       <AuthenticationForm />
-    </main>   
+    </div>   
   )
 }
+
+

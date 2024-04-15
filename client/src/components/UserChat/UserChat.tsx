@@ -13,13 +13,12 @@ export const UserChat = () => {
         if(user){
             socket.emit("setup", user);	
             socket.on("connected", () => setSocketConnected(true));
-            console.log('connected to socket ' + socketConnected);
         }   
     },[user]);
 
 
     return (
-    <div className='w-full flex flex-col justify-between'>
+    <div className='w-full flex flex-col justify-between h-full'>
         <ChatDisplay 
             socket={socket} 
             user={user}

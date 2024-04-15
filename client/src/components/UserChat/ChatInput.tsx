@@ -114,7 +114,7 @@ useEffect(() => {
 
 
   return (
-    <div className="flex w-full max-h-[7%] h-full flex-row items-center gap-2 rounded-[5px] border border-gray-900/10 bg-white-900/5">
+    <div className="z-0 flex w-full h-full max-h-[5%] flex-row items-center gap-2 rounded-[5px] border border-gray-900/10 bg-white-900/5">
       {isTypingMessage && <p className='text-xs text-gray-500 absolute mt-[-7rem] ml-3'>{isTypingMessage}</p>}
       <div className="flex">
         {/* <IconButton variant="text" className="rounded-full">

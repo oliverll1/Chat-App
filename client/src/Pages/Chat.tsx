@@ -1,11 +1,11 @@
 import { Sidebar } from '../components/Sidebar';
 import { UserChat } from '../components/UserChat/UserChat';
 
-export const Chat = () => {
+export default function Chat() {
   return (
-    <main className='w-full flex h-screen'>
+    <>
       <Sidebar />
       <UserChat />
-    </main>  
+    </>  
   )
 }

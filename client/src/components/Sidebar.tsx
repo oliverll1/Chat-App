@@ -29,7 +29,6 @@ import ChatMenuItem from "./ChatMenuItem";
 
  
 export function Sidebar() {
-  const [open, setOpen] = useState(0);
   const navigate =  useNavigate();
   const [userList, setUserList] = useState([]);
   const [searchText , setSearchText] = useState('');
@@ -40,12 +39,8 @@ export function Sidebar() {
     chats, 
     setChats,
     socket,
+    sidebarRef,
 } = ChatState();
-
- // TODO: Hamburger Menu
-  const handleOpen = (value) => {
-    setOpen(open ? false : value);
-  };
 
   const logout = () => {
     localStorage.removeItem('userInfo');
@@ -144,21 +139,19 @@ export function Sidebar() {
 
  
   return (
-    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 h-screen">
-      <div className="mb-2 flex items-center gap-4 p-4">
-        <Typography variant="h5" color="blue-gray">
-          Chat App
-        </Typography>
-      </div>
+    <Card 
+      ref={sidebarRef} 
+      className="rounded-none transition-all transform max-h-[95%] translate-x-[-100%] w-full h-full md:translate-x-0
+      absolute max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 md:relative md:max-h-[100%] z-10"
+    >
 
         <Tabs value="chats">
             <TabsHeader   
-            className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
-            indicatorProps={{
-              className:
-                "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
-            }}
-            
+              className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+              indicatorProps={{
+                className:
+                  "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
+              }} 
             >
                 <Tab value="chats">
                     Chats

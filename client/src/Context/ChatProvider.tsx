@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 
@@ -10,7 +10,7 @@ export const ChatProvider = ({ children }) => {
     const [selectedChat, setSelectedChat] = useState<string>();
     const [notifications, setNotifications] = useState<string[]>([]);
     const [chats, setChats] = useState<string[]>([]);
-
+    const sidebarRef = useRef(null);
     const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
     const socket = io( socketUrl, {
@@ -39,7 +39,8 @@ export const ChatProvider = ({ children }) => {
                 setNotifications, 
                 chats, 
                 setChats,
-                socket 
+                socket,
+                sidebarRef
             }}>
             {children}
         </ChatContext.Provider>
