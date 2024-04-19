@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Card,
-  Typography,
   List,
   ListItem,
   ListItemPrefix,
@@ -26,11 +25,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { ChatState } from "../Context/ChatProvider";
 import ChatMenuItem from "./ChatMenuItem";
+import { ChatStateProps } from "../types/types";
+import { IUser } from "../types/types";
 
  
 export function Sidebar() {
   const navigate =  useNavigate();
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState<IUser[]>([]);
   const [searchText , setSearchText] = useState('');
 
   const { 
@@ -40,7 +41,8 @@ export function Sidebar() {
     setChats,
     socket,
     sidebarRef,
-} = ChatState();
+} = ChatState() as ChatStateProps;
+
 
   const logout = () => {
     localStorage.removeItem('userInfo');
@@ -49,7 +51,9 @@ export function Sidebar() {
 
   const fetchChats = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
-    
+    if (!user) {
+      return;
+    }
     try {
         const config = {
           method: 'get',
@@ -73,7 +77,9 @@ export function Sidebar() {
 
   const fetchUsers = async (keyword: string = '') => {
     const apiUrl = import.meta.env.VITE_API_URL;
-    
+    if (!user) {
+      return;
+    }
         try {
           const config = {
               method: 'get',
@@ -96,6 +102,9 @@ export function Sidebar() {
 
   const accessChat = async (userId: string) => {
     const apiUrl = import.meta.env.VITE_API_URL;
+    if (!user) {
+      return;
+    }
 
     try {
       const config = {
@@ -123,11 +132,9 @@ export function Sidebar() {
     }
   };
 
-
-  const handleSearch = (event) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   }
-
 
   useEffect(() => {
     if(user){
@@ -136,8 +143,6 @@ export function Sidebar() {
     }
   }, [user]);
 
-
- 
   return (
     <Card 
       ref={sidebarRef} 
@@ -226,12 +231,6 @@ export function Sidebar() {
           </ListItemPrefix>
           Profile
         </ListItem>
-        {/* <ListItem>
-          <ListItemPrefix>
-            <Cog6ToothIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Settings
-        </ListItem> */}
         <ListItem onClick={logout}>
           <ListItemPrefix>
             <PowerIcon className="h-5 w-5" />

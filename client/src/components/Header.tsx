@@ -6,6 +6,7 @@ import {
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ChatState } from "../Context/ChatProvider";
+import { ChatStateProps } from "../types/types";
  
 
 export default function Header() {
@@ -14,11 +15,11 @@ export default function Header() {
 
   const { 
     sidebarRef,
-} = ChatState();
+} = ChatState() as ChatStateProps;
 
  
   const handleWindowResize = () => {
-    if (window.innerWidth < 720) { 
+    if (window.innerWidth < 720) {
       setShowHamburger(true);
       return;
     }
@@ -26,8 +27,7 @@ export default function Header() {
     setShowHamburger(false);
     
   }
-    
- 
+
   useEffect(() => {
     handleWindowResize();
     window.addEventListener("resize", handleWindowResize);
@@ -38,13 +38,15 @@ export default function Header() {
   }, []);
 
   const handleShowSidebar = () => {
+    if(!sidebarRef.current) return;
+  
     sidebarRef.current.classList.toggle("translate-x-[-100%]");
     setOpenNav(!openNav);
   }
  
   
   return (
-    <header className="w-full max-h-[5%] z-20">
+    <header className="w-full max-h-[5%] z-20 bg-white">
       <Navbar className="w-full h-full py-3 border-none rounded-none shadow-none">
         <div className="flex items-center justify-start text-blue-gray-900 w-full">
           <Typography

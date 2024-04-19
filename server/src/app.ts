@@ -9,6 +9,7 @@ import userRoutes from './routes/userRoutes';
 import { notFound } from './middleware/errorMiddleware';
 import chatRoutes from './routes/chatRoutes';
 import messageRoutes from './routes/messageRoutes';
+import { IUser } from './models/User';
 
 
 dotenv.config();
@@ -20,8 +21,6 @@ const server = createServer(app);
 const io = new Server(server);
 
 io.on('connection', async (socket) => {
-    console.log('user connected');
-
     socket.on('setup', (userData) => {
         if(!userData) {
             return;
@@ -56,7 +55,7 @@ io.on('connection', async (socket) => {
       return;
     } 
 
-    chat.users.forEach((user) => {
+    chat.users.forEach((user: IUser) => {
       if (user._id === newMessage.sender._id) {
         socket.emit("message sent", newMessage);
       } else {
@@ -103,4 +102,3 @@ app.use(notFound);
 server.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });
-

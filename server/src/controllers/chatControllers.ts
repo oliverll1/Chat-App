@@ -3,7 +3,6 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import User from '../models/User';
 import Chat from '../models/Chat';
-import { Document } from 'mongodb';
 
 export const accessChat = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.body;

@@ -14,5 +14,4 @@ A Full Stack web app for a chat between users.
 * Color Palette?
 
 ## Tech Debt:
-* Create and improve types
 * Optimize API Requests

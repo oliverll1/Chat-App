@@ -8,7 +8,7 @@ function App() {
     <main className='w-full flex h-full max-h-[95%]'>
       <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/chat" element={<Chat/>}/>     
+          <Route path="/chat" element={<Chat/>}/>   
       </Routes>
     </main>  
   )

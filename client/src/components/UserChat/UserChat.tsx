@@ -18,7 +18,7 @@ export const UserChat = () => {
 
 
     return (
-    <div className='w-full flex flex-col justify-between h-full'>
+    <div className='w-full flex flex-col justify-between h-full bg-white'>
         <ChatDisplay 
             socket={socket} 
             user={user}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { Error } from "../miscellaneous/Error";
-import { IFormErrors } from "../../types";
+import { IFormErrors } from "../../types/types";
 
 export function Signup() {
   const [formData, setFormData] = useState({

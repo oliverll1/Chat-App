@@ -1,22 +1,27 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
+import { ReactNode } from 'react';
+import { IChat } from "../types/types";
 
 const ChatContext = createContext({});
 
-export const ChatProvider = ({ children }) => {
+interface ChatProviderProps {
+    children: ReactNode
+}
 
-    const [user, setUser] = useState<string>();
-    const [selectedChat, setSelectedChat] = useState<string>();
+export const ChatProvider = ({ children }: ChatProviderProps) => {
+
+    const [user, setUser] = useState<string | null>(null);
+    const [selectedChat, setSelectedChat] = useState();
     const [notifications, setNotifications] = useState<string[]>([]);
-    const [chats, setChats] = useState<string[]>([]);
+    const [chats, setChats] = useState<IChat[]>([]);
     const sidebarRef = useRef(null);
     const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
     const socket = io( socketUrl, {
         transports: ['websocket']
     });
-
 
     const navigate = useNavigate();
 
@@ -45,7 +50,6 @@ export const ChatProvider = ({ children }) => {
             {children}
         </ChatContext.Provider>
     )
-  
 }
 
 export const ChatState = () => {

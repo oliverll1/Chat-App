@@ -3,36 +3,35 @@ import {
     Typography,
     ListItem,
     ListItemPrefix,
-    Avatar
+    Avatar,
   } from "@material-tailwind/react";
 import { Socket } from 'socket.io-client';
+import { IChat, IMessage, IUser } from '../types/types';
 
 
   interface ChatMenuItemProps {
-    chat: any;
+    chat: IChat;
     accessChat: (userId: string) => void;
-    user: any;
-    socket: Socket
+    user: IUser;
+    socket: Socket;
   }
   
 export default function ChatMenuItem({chat, accessChat, user, socket}: ChatMenuItemProps) {
 
   const [newMessageReceived, setNewMessageReceived ] = useState(chat.latestMessage ? chat.latestMessage.content : '');
   
-    const displayChatUser = chat.users.filter( (chatUser) => {
+    const displayChatUser = chat.users.filter( (chatUser: IUser) => {
         return chatUser._id !== user._id;
     });
 
     useEffect(() => {
 
-
       // If a message is received and the selected chat is the same as the chat where the message is received then display the new message in the menu preview.
-      const handleNewMessageReceived = (newMessage) => {
+      const handleNewMessageReceived = (newMessage: IMessage) => {
         if( newMessage.chat._id === chat._id )
           setNewMessageReceived(newMessage.content);
         };
     
-        
       socket.on("message received", handleNewMessageReceived );
       socket.on("message sent", handleNewMessageReceived);
 
