@@ -6,7 +6,7 @@ import {
     Avatar,
   } from "@material-tailwind/react";
 import { Socket } from 'socket.io-client';
-import { IChat, IMessage, IUser } from '../types/types';
+import { IChat, IMessage, IUser } from '../../types/types';
 
 
   interface ChatMenuItemProps {
@@ -28,9 +28,10 @@ export default function ChatMenuItem({chat, accessChat, user, socket}: ChatMenuI
 
       // If a message is received and the selected chat is the same as the chat where the message is received then display the new message in the menu preview.
       const handleNewMessageReceived = (newMessage: IMessage) => {
-        if( newMessage.chat._id === chat._id )
+        if( newMessage.chat._id === chat._id ) {
           setNewMessageReceived(newMessage.content);
-        };
+         }
+       };
     
       socket.on("message received", handleNewMessageReceived );
       socket.on("message sent", handleNewMessageReceived);

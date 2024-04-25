@@ -1,11 +1,11 @@
-import { Sidebar } from '../components/Sidebar';
-import { UserChat } from '../components/UserChat/UserChat';
+import { Sidebar } from '../components/Sidebar/Sidebar';
+import { ChatScreen } from '../components/ChatScreen/ChatScreen';
 
 export default function Chat() {
   return (
     <>
       <Sidebar />
-      <UserChat />
+      <ChatScreen />
     </>  
   )
 }

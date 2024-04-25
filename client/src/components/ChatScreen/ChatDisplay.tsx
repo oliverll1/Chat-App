@@ -3,18 +3,17 @@ import { ChatBubble } from "./ChatBubble";
 
 import ScrollableFeed from 'react-scrollable-feed';
 import { Socket } from "socket.io-client";
+import { IChat, IMessage, IUser } from "../../types/types";
 
 interface ChatDisplayProps {
   socket: Socket;
-  selectedChat: any;
-  user: any;
+  selectedChat: IChat | null;
+  user: IUser;
 }
 
 export const ChatDisplay = ({ socket, selectedChat, user}: ChatDisplayProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const [messages, setMessages] = useState<any>([]);
-
-
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -49,7 +48,7 @@ useEffect(() => {
 
 
 useEffect(() => {
-  const handleMessages = (newMessage) => {
+  const handleMessages = (newMessage: IMessage) => {
     setMessages(prevMessages => [...prevMessages, newMessage]);
   };
 
@@ -63,7 +62,7 @@ useEffect(() => {
 }),[socket, messages];
 
   return (
-    <div className='w-full flex h-full  max-h-[95%]  flex-col justify-end flex-end bg-gray-300  py-5'>
+    <div className='w-full flex h-full max-h-[95%] flex-col justify-end flex-end bg-gray-300 pb-8'>
           <ScrollableFeed className='w-full !h-auto  px-6'> {/* !h-auto --> overwrites inline height coming from the library */}
             <div className=" max-w-[1250px] m-auto">
               {messages.map((message) => (
@@ -79,3 +78,5 @@ useEffect(() => {
     </div>  
   )
 }
+
+export default ChatDisplay;

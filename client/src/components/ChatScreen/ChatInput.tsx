@@ -115,7 +115,7 @@ useEffect(() => {
 
   return (
     <div className="z-0 flex w-full h-full max-h-[5%] flex-row items-center gap-2  border-gray-900/10">
-      {isTypingMessage && <p className='text-xs text-gray-500 absolute mt-[-7rem] ml-3'>{isTypingMessage}</p>}
+      {isTypingMessage ? <p className='text-xs text-gray-500 absolute mb-[5.2rem] ml-3 mr-[-3.5rem]'>{isTypingMessage}</p> : null}
       <div className="flex">
         {/* <IconButton variant="text" className="rounded-full">
           <svg

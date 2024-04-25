@@ -8,7 +8,7 @@ import { Socket } from "socket.io-client";
 
 export interface IMessage {
     _id: string;
-    sender: string;
+    sender: IUser;
     content: string;
     chat: IChat;
     createdAt: string;
@@ -35,7 +35,8 @@ export interface IUser {
 export interface ChatStateProps { 
     user: IUser, 
     setSelectedChat: (chat:IChat) => void, 
-    chats: IChat[], 
+    chats: IChat[],
+    selectedChat: IChat | null,
     setChats: (chats: IChat[]) => void, 
     socket: Socket, 
     sidebarRef: React.RefObject<HTMLDivElement> 

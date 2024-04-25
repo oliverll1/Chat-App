@@ -5,8 +5,8 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ChatState } from "../Context/ChatProvider";
-import { ChatStateProps } from "../types/types";
+import { ChatState } from "./Context/ChatProvider";
+import { ChatStateProps } from "./types/types";
  
 
 export default function Header() {
@@ -46,8 +46,8 @@ export default function Header() {
  
   
   return (
-    <header className="w-full max-h-[5%] z-20 bg-white">
-      <Navbar className="w-full h-full py-3 border-none rounded-none shadow-none">
+    <header className="w-full max-h-[7%] h-full z-20 bg-white">
+      <Navbar className="w-full h-full flex items-center py-4 border-none rounded-none shadow-none">
         <div className="flex items-center justify-start text-blue-gray-900 w-full">
           <Typography
             variant="h2"
