@@ -1,12 +1,13 @@
 import { Textarea, IconButton } from "@material-tailwind/react";
 import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
+import { IChat, IUser } from "../../types/types";
 
 interface ChatInputProps {
   socket: Socket;
   socketConnected: boolean;
-  selectedChat: any;
-  user: any;
+  selectedChat: IChat | null;
+  user: IUser;
 }
 
 export function ChatInput({ socket, socketConnected, user, selectedChat }: ChatInputProps) {

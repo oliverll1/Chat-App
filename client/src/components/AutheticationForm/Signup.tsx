@@ -82,10 +82,9 @@ export function Signup() {
   };
 
   const handleSubmit = async () => {
-    validateForm();
-
-    if(errors.username || errors. email || errors. password) {
-      console.log("invalid form data " + errors)
+    if(errors.username || errors.email || errors.password) {
+      console.log("invalid form data ");
+      console.log(errors);
       return;
     }
 
@@ -109,6 +108,11 @@ export function Signup() {
         console.log(error);
     }
     
+  }
+
+  const handleClick = async () => {  
+    validateForm();
+    handleSubmit();
   }
 
   return (
@@ -199,7 +203,7 @@ export function Signup() {
         </div>
       
 
-        <Button className="mt-6" fullWidth onClick={handleSubmit} placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+        <Button className="mt-6" fullWidth onClick={handleClick} placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
           sign up
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal" placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
