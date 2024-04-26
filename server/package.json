@@ -5,8 +5,7 @@
   "main": "app.ts",
   "scripts": {
     "dev": "concurrently \"tsc -w\" \"nodemon ./dist/app.js\"",
-    "build": "tsc",
-    "start": "pm2 start dist/app.js --name serverapp"
+    "start": "tsc && pm2-runtime start dist/app.js --name serverapp"
   },
   "author": "",
   "license": "ISC",
