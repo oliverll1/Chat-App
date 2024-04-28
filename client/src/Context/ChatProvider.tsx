@@ -30,7 +30,14 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
         const parsedUserInfo: string = userInfo ? JSON.parse(userInfo) : null;
         setUser(parsedUserInfo);
   
-        if (!parsedUserInfo) navigate("/");
+        if (parsedUserInfo) {
+            navigate("/chat");
+            return;
+        } 
+
+        navigate("/");
+       
+
     }, [navigate]);
 
     return (
