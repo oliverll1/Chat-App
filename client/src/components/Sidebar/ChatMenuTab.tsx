@@ -11,7 +11,7 @@ interface ChatMenuTabProps {
     accessChat: (userId: string) => void;
     user: IUser;
     socket: Socket;
-    setChats: React.Dispatch<React.SetStateAction<IChat[]>>;
+    setChats: (chats: IChat[]) => void;
 }
 
 export const ChatMenuTab = ({chats, accessChat, user, socket, setChats }: ChatMenuTabProps) => {

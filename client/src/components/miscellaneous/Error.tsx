@@ -8,7 +8,7 @@ interface ErrorProps {
 export const Error = ({errorMessage, className}: ErrorProps) => {
   return (
     <>
-        <Typography className={className}variant="small" color="red" placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+        <Typography className={className}variant="small" color="red">
             {errorMessage}
         </Typography >
     </>

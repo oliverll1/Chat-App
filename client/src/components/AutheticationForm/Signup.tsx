@@ -174,14 +174,12 @@ export function Signup() {
               className: "before:content-none after:content-none",
             }}
             onChange={handleChange}
-            onPointerEnterCapture={null} 
-            onPointerLeaveCapture={null} 
-            crossOrigin={null}            
+          
           />
 
           <Error errorMessage={errors.password} className="mt-[-1.2rem]" />
 
-          <Typography variant="h6" color="blue-gray" className="-mb-3"  placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
             Confirm Password
           </Typography>
 
@@ -195,18 +193,15 @@ export function Signup() {
               className: "before:content-none after:content-none",
             }}
             onChange={handleChange}
-            onPointerEnterCapture={null} 
-            onPointerLeaveCapture={null} 
-            crossOrigin={null}            
           />
               <Error errorMessage={errors.password} className="mt-[-1.2rem]" />
         </div>
       
 
-        <Button className="mt-6" fullWidth onClick={handleClick} placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+        <Button className="mt-6" fullWidth onClick={handleClick}>
           sign up
         </Button>
-        <Typography color="gray" className="mt-4 text-center font-normal" placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+        <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
           <a href="/" className="font-medium text-gray-900">
             Sign In

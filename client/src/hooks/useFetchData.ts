@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { IUser } from '../types/types';
 
-const useFetchData = (user: IUser, requestUrl: string, dataKey: string, setDataCallback: ((data: []) => void) | undefined = undefined) => {
+const useFetchData = <T>(user: IUser, requestUrl: string, dataKey: string, setDataCallback: ((data: []) => void) | undefined = undefined) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<null | string>(null);
@@ -50,7 +50,7 @@ const useFetchData = (user: IUser, requestUrl: string, dataKey: string, setDataC
 
       }, [user, requestUrl]);
 
-      return { [dataKey]: data, isLoading, error };
+      return { [dataKey]: data as T[], isLoading, error };
     }
 
 export default useFetchData;

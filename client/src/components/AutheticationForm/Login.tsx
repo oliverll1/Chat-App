@@ -70,13 +70,13 @@ import { Error } from "../miscellaneous/Error";
     
 
     return (
-       <Card color="transparent" shadow={false} placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
-        <Typography variant="h4" color="blue-gray"  placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+       <Card color="transparent" shadow={false} >
+        <Typography variant="h4" color="blue-gray" >
           Log in
         </Typography>
         <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
           <div className="mb-1 flex flex-col gap-6">
-            <Typography variant="h6" color="blue-gray" className="-mb-3"  placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
               Email
             </Typography>
 
@@ -88,13 +88,10 @@ import { Error } from "../miscellaneous/Error";
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              onChange={handleChange}
-              onPointerEnterCapture={null} 
-              onPointerLeaveCapture={null} 
-              crossOrigin={null}  
+              onChange={handleChange} 
             />        
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3"  placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
               Password
             </Typography>
 
@@ -107,16 +104,13 @@ import { Error } from "../miscellaneous/Error";
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              onChange={handleChange}
-              onPointerEnterCapture={null} 
-              onPointerLeaveCapture={null} 
-              crossOrigin={null}            
+              onChange={handleChange}          
             />
           </div>
 
           <Error errorMessage={error} className="mb-2" />
   
-          <Button className="mt-6" fullWidth onClick={handleSubmit} placeholder={null} onPointerEnterCapture={null} onPointerLeaveCapture={null}>
+          <Button className="mt-6" fullWidth onClick={handleSubmit}>
             Log in
           </Button>
         </form>

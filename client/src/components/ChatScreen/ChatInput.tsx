@@ -82,7 +82,7 @@ export function ChatInput({ socket, socketConnected, user, selectedChat }: ChatI
 
     if (!socketConnected) return;
     setMessageText(event.target.value);
-    socket.emit("typing", { roomId: selectedChat._id, username: user.name });
+    socket.emit("typing", { roomId: selectedChat._id, username: user.username });
     const timerLength = 3000;
     
     // Clear previous timer if it exists

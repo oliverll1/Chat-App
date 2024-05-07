@@ -28,7 +28,7 @@ export const UserTab = ({user, accessChat}: UserTabProps) => {
   const [searchText , setSearchText] = useState('');
   const requestUrl = `${apiUrl}/user/?search=${keyword}`;
   
-  const { userList, isLoading } = useFetchData(user, requestUrl, 'userList');
+  const { userList, isLoading } = useFetchData<IUser>(user, requestUrl, 'userList');
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
@@ -70,14 +70,16 @@ export const UserTab = ({user, accessChat}: UserTabProps) => {
         </div>
 
         <List>                
-            {userList.map((user: IUser) => (
-            <ListItem key={user._id} onClick={() => accessChat(user._id)}>
-                <ListItemPrefix>
-                    <Avatar variant="circular" alt="alexander" src="https://docs.material-tailwind.com/img/face-2.jpg" />
-                </ListItemPrefix>
-                {user.username}
-            </ListItem>
-            ))} 
+            {
+                Array.isArray(userList) ? userList.map((user: IUser) => (
+                <ListItem key={user._id} onClick={() => accessChat(user._id)}>
+                    <ListItemPrefix>
+                        <Avatar variant="circular" alt="alexander" src="https://docs.material-tailwind.com/img/face-2.jpg" />
+                    </ListItemPrefix>
+                    {user.username}
+                </ListItem>
+                )) : null
+            } 
         </List>       
     </>
   )
