@@ -3,7 +3,6 @@ import asyncHandler from 'express-async-handler';
 import  { Request, Response } from 'express';
 import User from '../models/User';
 import { generateToken } from '../config/generateToken';
-import { IUser } from '../models/User';
 
 
 export const registerUser = asyncHandler(async (req: Request, res: Response): Promise<void> => {
@@ -13,7 +12,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response): Pr
     if (!username || !email || !password) {
         res.status(400);
         throw new Error("Please add all fields");
-      }
+    }
 
     const userExists = await User.findOne({ email: req.body.email });
 
@@ -22,6 +21,15 @@ export const registerUser = asyncHandler(async (req: Request, res: Response): Pr
         throw new Error("User already exists");
     }
 
+    if (username.length < 3) {
+      res.status(400).json({ message: 'Username must be at least 3 characters long' });
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      res.status(400).json({ message: 'Invalid email address' });
+      return;
+    }
 
     const user = await User.create({ username, email, password });
 

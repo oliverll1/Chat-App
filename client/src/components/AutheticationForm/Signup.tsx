@@ -22,7 +22,7 @@ export function Signup() {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const isValidEmail = (email: string) => {
-    return email && /\S+@\S+\.\S+/.test(email);
+    return email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   const isValidUsername = (username: string) => {
